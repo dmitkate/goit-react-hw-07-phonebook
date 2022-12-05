@@ -1,24 +1,24 @@
 import css from '../components/formin.module.css';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import React from 'react';
 import { addContacts } from 'redux/operation';
 import { Formik, Form, Field } from 'formik';
-//import { nanoid } from 'nanoid';
+import { selectContacts } from 'redux/selectors';
+
 export function FormIn() {
   const dispatch = useDispatch();
-  //const contacts = useSelector(state => state.contacts);
+  const contacts = useSelector(selectContacts);
 
   const handleSubmit = ({ name, number }, { resetForm }) => {
-    // if (contacts.find(contact => contact.name === name)) {
-    //   alert.warning(`${name} is already in contacts`);
-    //   return;
-    // }
-
     const text = {
       name,
       number,
     };
-    dispatch(addContacts(text.value));
+    if (contacts.find(contact => contact.name === name)) {
+      alert.warning(`${name} is already in contacts`);
+      return;
+    }
+    dispatch(addContacts(text));
     resetForm();
   };
 
